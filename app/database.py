@@ -1,7 +1,7 @@
 #? Contiene la clase "Database", la cual abstrae todavía más la interacción con la base
 #? de datos establecida por Flask-SQLAlchemy
 
-from sqlalchemy import text, select, Table
+from sqlalchemy import text, select, Table, insert
 from app import app
 from app import database
 
@@ -48,3 +48,10 @@ class Database:
     def select_tables(self):
         tables = self.database.metadata.tables
         return list(tables.keys())
+
+    def insert_into(self, table: Table = None, data: dict = None ):
+        print("Insertando!....")
+        stmt = insert(table).values(**data)
+
+        self.database.session.execute(stmt)
+        self.database.session.commit()
