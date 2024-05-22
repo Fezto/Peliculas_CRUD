@@ -1,6 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1> Lol que bien </h1>
-    {{ render_form(login_form) }}
-{%  endblock %}
+    <table id="data" class="table table-sm table-hover table-striped">
+        <thead>
+            <tr>
+                {% for column_head in table_headers %}
+                <th> {{ column_head }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+        {% for column in table_body %}
+            <tr>
+                {% for cell in column %}
+                    <td> {{ cell }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
