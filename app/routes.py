@@ -1,10 +1,13 @@
-from flask import render_template, url_for, flash, send_from_directory, request
+from flask import render_template, url_for, flash, send_from_directory, request, redirect
 from app import app
 from app.forms.login_form import LoginForm
 from app.database import Database
 
 db = Database()
 
+@app.route("/", methods=["GET"])
+def start():
+    return redirect(url_for("index", table=db.addresses))
 
 @app.route("/index/<table>", methods=["GET", "POST"])
 def index(table):
