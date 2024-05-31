@@ -4,7 +4,11 @@ from app import app
 from app.database import Database
 from app.forms.modal_form import generate_dynamic_form
 
+#* Instancia para el contacto con nuestra base de datos
 db = Database()
+
+#* Para llenar las opciones en el <navbar> lateral
+tables = db.select_tables()
 
 @app.route("/", methods=["GET"])
 def start():
@@ -13,9 +17,6 @@ def start():
 @app.route("/index/<table>", methods=["GET", "POST"])
 def index(table):
     if request.method == "GET":
-
-        #* Para llenar las opciones en el <navbar> lateral
-        tables = db.select_tables()
 
         #* Para el llenado del <table> y el <modal>
         table_columns = db.select_columns(table=db[table])
@@ -33,4 +34,26 @@ def index(table):
 
         return render_template('index.html', table_body=table_body, table_headers=table_columns, tables=tables, modal_form=modal_form)
 
+    elif request.method == "POST":
 
+        #* Para el llenado del <table> y el <modal>
+        table_columns = db.select_columns(table=db[table])
+        table_columns_data = db.select_columns_data(db[table])
+
+        #* Genera un formulario (clase) de FlaskWTF dinámicamente con las
+        #* propiedades adecuadas por cada columna de la tabla. Este se
+        #* insertará dentro del <modal>
+
+        ModalForm = generate_dynamic_form(table_columns_data=table_columns_data, table_columns=table_columns, db=db)
+
+        #* Instancia de la clase generada
+        modal_form = ModalForm(request.form)
+
+        if modal_form.validate_on_submit():
+
+            registry = {field.name: field.data for field in modal_form if field.name != 'csrf_token' and field.name != 'submit'}
+
+            # Inserta los datos en la base de datos
+            db.insert_into(db[table], registry)
+
+        return redirect(url_for("index", table=table))

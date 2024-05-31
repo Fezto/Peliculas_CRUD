@@ -2,21 +2,22 @@ from flask_wtf import FlaskForm
 from wtforms.fields.choices import SelectField
 from wtforms.fields.datetime import DateField
 from wtforms.fields.numeric import IntegerField, DecimalField
-from wtforms.fields.simple import StringField
-from wtforms.validators import DataRequired
+from wtforms.fields.simple import StringField, SubmitField
+from wtforms.validators import DataRequired, Length
 
 from app.database import Database
+
 from typing import List, Dict, Any
+from re import findall
 
 
 def generate_dynamic_form(table_columns_data: Dict[str, Any] = None, table_columns: List[str] = None, db: Database = None):
-    print(type(table_columns_data))
-    print(type(table_columns))
-    return type('DynamicForm', (FlaskForm,), {
-        column: get_field_class(table_columns_data[column], column, db) for column in table_columns
-    })
 
+    fields = {column: get_field_class(table_columns_data[column], column, db) for column in table_columns[1:]}
 
+    fields['submit'] = SubmitField("Insertar")
+
+    return type("DynamicForm", (FlaskForm,), fields)
 def get_field_class(column_data, column, db):
     #* Si la columna tiene una llave foránea, crea un <select>
     if len(column_data["foreign_key"]) > 0:
@@ -30,7 +31,6 @@ def get_field_class(column_data, column, db):
 
         choices = []
 
-        print(foreign_table_body)
         for registry in foreign_table_body:
             choice_id = registry[0]
             choice_value = registry[1]
@@ -49,4 +49,6 @@ def get_field_class(column_data, column, db):
     elif any(date_type in column_data["type"] for date_type in ["DATE", "DATETIME"]):
         return DateField(column, validators=[DataRequired()])
     else:
-        return StringField(column, validators=[DataRequired()])
+        numbers = findall(r'\d+', column_data["type"])
+        max_length = int(''.join(numbers))
+        return StringField(column, validators=[DataRequired(), Length(max=max_length)])
