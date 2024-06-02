@@ -32,9 +32,9 @@ def get_field_class(column_data, column, db):
         choices = []
 
         for registry in foreign_table_body:
-            choice_id = registry[0]
-            choice_value = registry[1]
-            choice = (choice_id, "id: " + str(choice_id) + " ("+ str(choice_value) + ")")
+            choice_value = registry[0]      # El valor real a subir será el id siempre
+            choice_show_name = registry[1]  # El nombre con el que se muestra en front
+            choice = (choice_value, "id: " + str(choice_value) + " ("+ str(choice_show_name) + ")")
             choices.append(choice)
 
         return SelectField(column, choices=choices, validators=[DataRequired()])

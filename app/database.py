@@ -1,7 +1,7 @@
 #? Contiene la clase "Database", la cual abstrae todavía más la interacción con la base
 #? de datos establecida por Flask-SQLAlchemy
 
-from sqlalchemy import text, select, Table, insert
+from sqlalchemy import text, select, Table, insert, delete, update
 from app import app
 from app import database
 
@@ -57,11 +57,24 @@ class Database:
 
     #* Inserta uno o varios registros
     def insert_into(self, table: Table = None, data: dict = None ):
-        print("Insertando!....")
+        print("Insertando....")
         stmt = insert(table).values(**data)
+        self.database.session.execute(stmt)
+        self.database.session.commit()
+
+    def update_from(self, table: Table = None, registry_id: int = None, data: dict = None):
+        print("Actualizando...")
+        stmt = update(table).where(table.c.id == registry_id).values(data)
+        self.database.session.execute(stmt)
+        self.database.session.commit()
+
+    def delete_from(self, table: Table = None, registry_id: int = None):
+        print("Eliminando...")
+        stmt = delete(table).where(table.c.id == registry_id)
 
         self.database.session.execute(stmt)
         self.database.session.commit()
+
 
     #* Regresa datos relevantes de todas las columnas de cierta tabla
     def select_columns_data(self, table: Table = None):

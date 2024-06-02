@@ -1,16 +1,19 @@
-$(document).ready(function(){
-    $("#search").on("keyup", function() {
-        var value = $(this).val().toLowerCase();
-        $(".table_name").each(function() {
-            var text = $(this).text().toLowerCase();
+document.addEventListener('DOMContentLoaded', function() {
+    const search = document.getElementById('search');
+    search.addEventListener('keyup', function() {
+        const value = this.value.toLowerCase();
+        const tableNames = document.querySelectorAll('.table_name');
+        tableNames.forEach(function(table) {
+            const text = table.textContent.toLowerCase();
+            const link = table.querySelector('a');
             if (text.indexOf(value) > -1) {
-                $(this).animate({opacity: '1'}, 200); // Restaura la opacidad a 1 con una animación
-                $(this).css('pointer-events', 'auto'); // Hace el elemento clickeable
-                $(this).find('a').removeClass('disabled'); // Habilita el enlace
+                table.style.opacity = '1';
+                table.style.pointerEvents = 'auto';
+                link.classList.remove('disabled');
             } else {
-                $(this).animate({opacity: '0.2'}, 200); // Reduce la opacidad a 0.2 con una animación
-                $(this).css('pointer-events', 'none'); // Hace el elemento no clickeable
-                $(this).find('a').addClass('disabled'); // Deshabilita el enlace
+                table.style.opacity = '0.2';
+                table.style.pointerEvents = 'none';
+                link.classList.add('disabled');
             }
         });
     });

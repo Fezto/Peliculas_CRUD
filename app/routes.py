@@ -10,9 +10,11 @@ db = Database()
 #* Para llenar las opciones en el <navbar> lateral
 tables = db.select_tables()
 
+
 @app.route("/", methods=["GET"])
 def start():
     return redirect(url_for("index", table=db.addresses))
+
 
 @app.route("/index/<table>", methods=["GET", "POST"])
 def index(table):
@@ -32,7 +34,9 @@ def index(table):
         #* Instancia de la clase generada
         modal_form = ModalForm()
 
-        return render_template('index.html', table_body=table_body, table_headers=table_columns, tables=tables, modal_form=modal_form)
+        return render_template('index.html',
+                               table=table, table_body=table_body, table_headers=table_columns, tables=tables,
+                               modal_form=modal_form), 200
 
     elif request.method == "POST":
 
@@ -50,10 +54,23 @@ def index(table):
         modal_form = ModalForm(request.form)
 
         if modal_form.validate_on_submit():
+            registry = {field.name: field.data for field in modal_form if
+                        field.name != 'csrf_token' and field.name != 'submit'}
 
-            registry = {field.name: field.data for field in modal_form if field.name != 'csrf_token' and field.name != 'submit'}
-
-            # Inserta los datos en la base de datos
             db.insert_into(db[table], registry)
 
         return redirect(url_for("index", table=table))
+
+
+@app.route("/index/<table>/<int:id>", methods=["DELETE", "PATCH"])
+def delete(table, id):
+    if request.method == "DELETE":
+        if table in tables:
+            db.delete_from(table=db[table], registry_id=id)
+            return "Eliminación exitosa", 200
+
+    elif request.method == "PATCH":
+        if table in tables:
+            pass
+
+

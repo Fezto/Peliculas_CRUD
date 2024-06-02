@@ -9,3 +9,18 @@
 .icon-large {
     font-size: 1.3em;
 }
+
+.center-content {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.center-content button {
+    margin-right: 1rem;
+}
+
+.table_name {
+    transition: opacity 0.2s linear;
+}

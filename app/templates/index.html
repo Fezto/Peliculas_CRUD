@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <table id="data" class="table table-sm table-hover table-striped">
+    <table id="data" class="table table-sm table-hover table-striped" name="{{ table }}">
         <thead>
             <tr>
                 {% for column_head in table_headers %}
                 <th> {{ column_head }}</th>
                 {% endfor %}
+                <th class="center-content"></th>   <!-- Columna extra para botones-->
             </tr>
         </thead>
         <tbody class="table-group-divider">
@@ -15,6 +16,8 @@
                 {% for cell in column %}
                     <td> {{ cell }}</td>
                 {% endfor %}
+                <td class="center-content">
+                </td>   <!-- Celda adicional para botones -->
             </tr>
         {% endfor %}
         </tbody>
