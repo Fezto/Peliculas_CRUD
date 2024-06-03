@@ -24,3 +24,13 @@
 .table_name {
     transition: opacity 0.2s linear;
 }
+
+#main_table {
+    height: 30rem;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.btn-edit {
+    margin-right: 10px
+}

@@ -1,4 +1,4 @@
-from flask import render_template, url_for, flash, send_from_directory, request, redirect
+from flask import render_template, url_for, flash, send_from_directory, request, redirect, jsonify
 
 from app import app
 from app.database import Database
@@ -11,18 +11,17 @@ db = Database()
 tables = db.select_tables()
 
 
+#* Rutas principales. Estas son las que responden ante
+#* las solicitudes HTTP del cliente.
 @app.route("/", methods=["GET"])
 def start():
     return redirect(url_for("index", table=db.addresses))
-
 
 @app.route("/index/<table>", methods=["GET", "POST"])
 def index(table):
     if request.method == "GET":
 
-        #* Para el llenado del <table> y el <modal>
         table_columns = db.select_columns(table=db[table])
-        table_body = db.select_all(table=db[table])
         table_columns_data = db.select_columns_data(db[table])
 
         #* Genera un formulario (clase) de FlaskWTF dinámicamente con las
@@ -35,7 +34,7 @@ def index(table):
         modal_form = ModalForm()
 
         return render_template('index.html',
-                               table=table, table_body=table_body, table_headers=table_columns, tables=tables,
+                               table=table, tables=tables,
                                modal_form=modal_form), 200
 
     elif request.method == "POST":
@@ -73,4 +72,19 @@ def delete(table, id):
         if table in tables:
             pass
 
+#* Rutas que devuelven información relevante en JSON.
+#* Su uso radica solo para la renderización de la tabla.
+
+@app.route("/data/<table>/body", methods=["GET"])
+def body(table):
+    table_body = db.select_all(table=db[table])
+    table_body = [row._asdict() for row in table_body]
+    return table_body
+
+
+@app.route("/data/<table>/columns", methods=["GET"])
+def columns(table):
+    table_columns = db.select_columns(table=db[table])
+    print(table_columns)
+    return table_columns
 

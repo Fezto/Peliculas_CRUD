@@ -13,6 +13,9 @@ class Database:
     def __init__(self):
         self.database = database
 
+        #* Cargamos la información de las tablas en la propiedad
+        #* metadata que utiliza SQLAlchemy para saber los tipos de
+        #* dato, foreign keys etc de cada tabla.
         with app.app_context():
             self.database.reflect()
 
@@ -55,19 +58,21 @@ class Database:
         tables = self.database.metadata.tables
         return list(tables.keys())
 
-    #* Inserta uno o varios registros
+    #* Inserta un registro
     def insert_into(self, table: Table = None, data: dict = None ):
         print("Insertando....")
         stmt = insert(table).values(**data)
         self.database.session.execute(stmt)
         self.database.session.commit()
 
+    #* Actualiza un registro
     def update_from(self, table: Table = None, registry_id: int = None, data: dict = None):
         print("Actualizando...")
         stmt = update(table).where(table.c.id == registry_id).values(data)
         self.database.session.execute(stmt)
         self.database.session.commit()
 
+    #* Elimina un registro
     def delete_from(self, table: Table = None, registry_id: int = None):
         print("Eliminando...")
         stmt = delete(table).where(table.c.id == registry_id)
@@ -87,7 +92,7 @@ class Database:
                 "nullable": column.nullable,
                 "default": str(column.default.arg) if column.default is not None else None,
                 "primary_key": column.primary_key,
-                "foreign_key": column.foreign_keys
+                "foreign_key": list(column.foreign_keys)
             }
 
         return table_info
