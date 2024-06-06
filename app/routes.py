@@ -20,7 +20,7 @@ def start():
 @app.route("/index/<table>", methods=["GET", "POST"])
 def index(table):
     if request.method == "GET":
-
+        print("tabla actual: ", table)
         table_columns = db.select_columns(table=db[table])
         table_columns_data = db.select_columns_data(db[table])
 
@@ -68,7 +68,7 @@ def delete(table, id):
             db.delete_from(table=db[table], registry_id=id)
             return "Eliminación exitosa", 200
 
-    elif request.method == "PATCH":
+    elif request.method == "PUT":
         if table in tables:
             pass
 

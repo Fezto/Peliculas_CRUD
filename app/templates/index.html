@@ -71,19 +71,33 @@
     </div>
 </nav>
 
-<!-- Contenido de la página a agregar-->
-<div id="main_table" class="ag-theme-alpine""></div>
+<!-- Tabla -->
+<div id="main_table" class="ag-theme-alpine" data-table-name="{{ table }}"></div>
 
+<div id="modalId" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {{ render_form(modal_form) }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
 </div>
-<div class="m-4">
 
-    {{ render_form(modal_form) }}
-</div>
 
 <!-- Scripts insertados -->
 {{ bootstrap.load_js() }}
 <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="{{ url_for("static", filename="scripts/table_buttons.js") }}"></script>
 <script src="{{ url_for('static', filename='scripts/table_addons.js') }}"></script>
 <script src="{{ url_for('static', filename='scripts/navbar_search.js') }}"></script>
 
