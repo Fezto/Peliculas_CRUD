@@ -25,7 +25,7 @@
 
         <!-- Botones de la barra de navegación -->
         <div class="ms-auto">
-            <button type="button" class="btn btn-primary">
+            <button type="button" class="btn btn-primary btn-add">
                 <i class="bi bi-database-add icon-large"></i>
             </button>
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
@@ -74,7 +74,8 @@
 <!-- Tabla -->
 <div id="main_table" class="ag-theme-alpine" data-table-name="{{ table }}"></div>
 
-<div id="modalId" class="modal" tabindex="-1">
+<!-- Modal -->
+<div id="main_modal" class="modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -82,11 +83,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <form id="modal_form">
                 {{ render_form(modal_form) }}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                </form>
             </div>
         </div>
     </div>
@@ -97,9 +96,30 @@
 {{ bootstrap.load_js() }}
 <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<!-- Importamos algunas funciones pequeñas pero importantes
+     para el funcionamiento del CRUD en general -->
+<script src="{{ url_for("static", filename="scripts/init.js") }}"></script>
+
+<!-- Importamos las funciones que hacen las solicitudes HTTP
+     Son las peticiones hacia las rutas /data de Flask. -->
+<script src="{{ url_for("static", filename="scripts/requests.js") }}"></script>
+
+<!-- Importamos una clase personalizada para su incorporación en
+     la última columna de la tabla de AgGrid. Son los botones. -->
 <script src="{{ url_for("static", filename="scripts/table_buttons.js") }}"></script>
+
+<!-- Importamos la función encargada de la creación / modificación
+     de la tabla de AgGrid. Este es quien lo renderiza -->
 <script src="{{ url_for('static', filename='scripts/table_addons.js') }}"></script>
+
+<!-- Importamos la función encargada del filtrado de datos en el
+     navbar lateral de la página -->
 <script src="{{ url_for('static', filename='scripts/navbar_search.js') }}"></script>
+
+<!-- Importamos la función encargada del filtrado de datos en el
+     navbar lateral de la página -->
+<script src="{{ url_for('static', filename='scripts/form_ajax.js') }}"></script>
 
 </body>
 </html>

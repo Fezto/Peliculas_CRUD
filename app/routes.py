@@ -56,12 +56,13 @@ def index(table):
             registry = {field.name: field.data for field in modal_form if
                         field.name != 'csrf_token' and field.name != 'submit'}
 
-            db.insert_into(db[table], registry)
+            db.insert_into(table= db[table], data= registry)
+            return jsonify({'message': 'Registry added successfully'}), 200
 
-        return redirect(url_for("index", table=table))
+        return jsonify({'message': 'Invalid form data'}), 400
 
 
-@app.route("/index/<table>/<int:id>", methods=["DELETE", "PATCH"])
+@app.route("/index/<table>/<int:id>", methods=["DELETE", "PUT"])
 def delete(table, id):
     if request.method == "DELETE":
         if table in tables:
@@ -87,4 +88,5 @@ def columns(table):
     table_columns = db.select_columns(table=db[table])
     print(table_columns)
     return table_columns
+
 

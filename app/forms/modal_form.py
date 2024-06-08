@@ -15,9 +15,7 @@ def generate_dynamic_form(table_columns_data: Dict[str, Any] = None, table_colum
 
     #* Los <input> dependerán del tipo de columna.
     fields = {column: get_field_class(table_columns_data[column], column, db) for column in table_columns[1:]}
-
     fields['submit'] = SubmitField("Insertar")
-
     return type("DynamicForm", (FlaskForm,), fields)
 
 #* Define si cada columna debe de recibir datos por un <input> o un <select>.

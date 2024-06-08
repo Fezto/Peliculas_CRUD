@@ -1,27 +1,30 @@
+//* Este archivo solo se encarga de realizar una clase que contenga toda la funcionalidad
+//* de los botones que se insertan en la última columna de la tabla de AgGrid.
+
 class ButtonCellRenderer {
     init(params) {
         this.params = params;
         this.eGui = document.createElement('div');
-
+        this.eGui.className = "button-container"
 
         let editButton = document.createElement('button');
         editButton.className = "btn-edit btn btn-warning";
         editButton.innerHTML = '<i class="bi bi-pencil-square "></i>';
-        editButton.addEventListener('click', () => {
-            let modalElement = document.getElementById('modalId'); // Reemplaza 'modalId' con el ID de tu modal
-            let modalInstance = new bootstrap.Modal(modalElement, {}); // Establece el contenido del modal
-            modalInstance.show();
-        });
+        editButton.addEventListener("click", async () => {
+            show_modal("main_modal")
+            let row_data = this.params.node.data
+        })
+
 
         let deleteButton = document.createElement('button');
         deleteButton.className = "btn-delete btn btn-danger";
         deleteButton.innerHTML = '<i class="bi bi-trash "></i>';
-        deleteButton.addEventListener('click', () => {
-            const table_name = document.querySelector("#main_table").getAttribute("data-table-name")
-            const rowData = this.params.node.data;
-            const id = rowData.id
-            axios.delete(`/index/${table_name}/${id}`)
-            gridApi.applyTransaction({ remove: [rowData] });
+        deleteButton.addEventListener('click', async () => {
+            const table_name = get_current_table_name()
+            const row_data = this.params.node.data;
+            const id = row_data.id
+            await delete_from({table: table_name, id: id})
+            gridApi.applyTransaction({ remove: [row_data] });
         });
 
         this.eGui.appendChild(editButton);

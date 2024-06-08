@@ -32,5 +32,19 @@
 }
 
 .btn-edit {
-    margin-right: 10px
+    margin-right: 10px;
+    height: 2.1rem;
+    margin-top: 0.2rem;
+}
+
+.btn-delete {
+    height: 2.1rem;
+    margin-top: 0.2rem;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
