@@ -38,7 +38,6 @@ def index(table):
                                modal_form=modal_form), 200
 
     elif request.method == "POST":
-
         #* Para el llenado del <table> y el <modal>
         table_columns = db.select_columns(table=db[table])
         table_columns_data = db.select_columns_data(db[table])
@@ -67,11 +66,14 @@ def delete(table, id):
     if request.method == "DELETE":
         if table in tables:
             db.delete_from(table=db[table], registry_id=id)
-            return "Eliminación exitosa", 200
+            return jsonify({"message": "Successful deletion"}), 200
 
     elif request.method == "PUT":
         if table in tables:
-            pass
+            data = request.json
+            data.pop("csrf_token", None)
+            db.update_from(table=db[table], data=data, registry_id=id)
+            return jsonify({"message": "Successful update"}), 200
 
 #* Rutas que devuelven información relevante en JSON.
 #* Su uso radica solo para la renderización de la tabla.

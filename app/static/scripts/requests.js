@@ -15,3 +15,26 @@ async function select_columns(table) {
 async function delete_from({table, id}) {
     await axios.delete(`/index/${table}/${id}`)
 }
+
+async function insert_into({table, data}){
+    await axios({
+        method: "POST",
+        url: `/index/${table}`,
+        data: data,
+        headers: {
+            "X-Requested-With": "XMLHttpRequest",
+        }
+    })
+}
+
+async function update_from({table, data, id}){
+    await axios({
+        method: "PUT",
+        url: `/index/${table}/${id}`,
+        data: data,
+        headers: {
+            "X-Requested-With": "XMLHttpRequest",
+            'Content-Type': 'application/json'
+        }
+    })
+}

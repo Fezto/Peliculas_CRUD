@@ -3,29 +3,27 @@ let modal_form = document.getElementById("modal_form")
 
 modal_form.addEventListener("submit", async function (event) {
     event.preventDefault()
-
     const table_name = get_current_table_name()
-    let formData = new FormData(this);
-    axios({
-        method: "POST",
-        url: `/index/${table_name}`,
-        data: formData,
-        headers: {
-            "X-Requested-With": "XMLHttpRequest",
-        }
-    }).then(function(response) {
-        console.log(response.data.message);
-        create_table(table_name)
-    }).catch(function(error) {
-        console.log(error);
-    });
+    let form_data = new FormData(this);
+    const action = modal.getAttribute("action")
+    const registry_id = modal.getAttribute("registry-id")
+    console.log("Action: ", action, "id: ", registry_id)
 
+    switch (action) {
+        case("POST"):
+            await insert_into({table: table_name, data: form_data});
+            break;
+        case("PUT"):
+            await update_from({table: table_name, data: form_data, id: registry_id})
+            break
+    }
+    await create_table(table_name)
     let bootstrapModal = bootstrap.Modal.getInstance(modal)
     bootstrapModal.hide()
-});
+})
 
 let addButton = document.querySelector(".btn-add")
 addButton.addEventListener('click', () => {
-show_modal({id: "main_modal"})
+    show_modal({id: "main_modal", action: "POST"})
 });
 
