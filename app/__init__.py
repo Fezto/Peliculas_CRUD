@@ -24,21 +24,3 @@ database = SQLAlchemy(app)
 
 #* Una vez lista la app, traer todas las rutas desde routes.py
 from app import routes
-
-
-"""
-from sqlalchemy import create_engine
-from sqlalchemy import MetaData
-
-engine = create_engine('mysql+mysqlconnector://root:Spongebob400!@localhost/chacharitas')
-metadata = MetaData()
-
-mivar.engine.connect().execute(my_sql)
-mivar.engine.session().execute(my_sql)  
-
-engine.connect().execute(my_sql)
-engine.connect().commit()
-engine.begin().execute(my_sql)
-
-Session(engine).execute(my_sql)
-"""
