@@ -1,10 +1,6 @@
 #? Inicializador de la mayoría de las dependencias. Genera la instancia de Flask e inicializa
 #? todas las dependencias que requieran de dicha instancia para funcionar.
 
-#* Flask: Nos permite realizar las solicitudes HTTP y manejar el backend con Python
-#* Bootstrap-Flask: Permite incorporar Bootstrap de manera sencilla en una app de Flask
-#* Flask-SQLAlchemy: Es un wrapper de SQLAlchemy que facilita y automatiza la conexión de DB con Flask
-
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap5
