@@ -7,7 +7,6 @@ modal_form.addEventListener("submit", async function (event) {
     let form_data = new FormData(this);
     const action = modal.getAttribute("action")
     const registry_id = modal.getAttribute("registry-id")
-    console.log("Action: ", action, "id: ", registry_id)
 
     switch (action) {
         case("POST"):
