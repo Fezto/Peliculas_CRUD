@@ -20,10 +20,23 @@ Todas las librerías por la parte de JavaScript son importadas mediante CDNs, po
 ### 3. Ingresa al archivo ``.env``
 Dentro de tu IDE modifica el archivo ``.env`` previamente mencionado con las credenciales de tu base de datos
 ```bash
-DB_HOST=localhost     # Por lo general eso no cambia  
-DB_NAME=chacharitas   # El nombre de la base de datos
-DB_USER=root          # El nombre de usuario
-DB_PASS=mi_pwd        # La contraseña de tu usuario
+# Escoje entre sqlserver y mysql
+# Ambos requieren DB_USER, DB_PASS Y DB_NAME
+# mysql requiere adicionalmente de DB_HOST
+# sqlserver requiere adicionalmente de SV_NAME
+
+# En caso de usar la autenticación por Windows de
+# SQLServer, solo se necesita SV_NAME y DB_NAME
+
+# Lo que no uses se puede quedar vacío
+
+DB_ORIGIN=sqlserver
+
+DB_HOST=localhost
+DB_NAME=db_name
+DB_USER=db_user
+DB_PASS=db_user_pwd
+SV_NAME=sv_name
 ```
 
 ### 4. Ejecuta el programa
