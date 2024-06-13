@@ -20,19 +20,8 @@ class Database:
             self.database.reflect()
 
         #* ... Y las asignamos como propiedades
-        self.addresses: Table = self.database.metadata.tables["addresses"]
-        self.brands: Table = self.database.metadata.tables["brands"]
-        self.categories: Table = self.database.metadata.tables["categories"]
-        self.clients: Table = self.database.metadata.tables["clients"]
-        self.colors: Table = self.database.metadata.tables["colors"]
-        self.genders: Table = self.database.metadata.tables["genders"]
-        self.materials: Table = self.database.metadata.tables["materials"]
-        self.order_details: Table = self.database.metadata.tables["order_details"]
-        self.orders: Table = self.database.metadata.tables["orders"]
-        self.products: Table = self.database.metadata.tables["products"]
-        self.sizes: Table = self.database.metadata.tables["sizes"]
-        self.subscriptions: Table = self.database.metadata.tables["subscriptions"]
-        self.type_subscriptions: Table = self.database.metadata.tables["type_subscriptions"]
+        for table_name, table in self.database.metadata.tables.items():
+            setattr(self, table_name, table)
 
     #* Sobrecarga del operador []. Nos permite acceder a las propiedades
     #* de la clase mediante corchetes. En vez de db.tabla, podemos usar
