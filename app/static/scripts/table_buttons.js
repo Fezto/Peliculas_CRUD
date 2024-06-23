@@ -1,5 +1,5 @@
-//* Este archivo solo se encarga de realizar una clase que contenga toda la funcionalidad
-//* de los botones que se insertan en la última columna de la tabla de AgGrid.
+// * Este archivo solo se encarga de realizar una clase que contenga toda la funcionalidad
+// * de los botones que se insertan en la última columna de la tabla de AgGrid.
 
 class ButtonCellRenderer {
     init(params) {
@@ -15,10 +15,8 @@ class ButtonCellRenderer {
         editButton.className = "btn-edit btn btn-warning";
         editButton.innerHTML = '<i class="bi bi-pencil-square "></i>';
         editButton.addEventListener("click", async () => {
-            console.log("[table_buttons.js] id: ", id)
             show_modal({id: "main_modal", action:"PUT", registry_id: id})
         })
-
 
         let deleteButton = document.createElement('button');
         deleteButton.className = "btn-delete btn btn-danger";

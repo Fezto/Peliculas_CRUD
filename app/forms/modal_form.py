@@ -37,28 +37,32 @@ def get_field_class(column_data, column, db):
         foreign_table = foreign_keys[0].column.table.name
         foreign_table_body = db.select_all(db[foreign_table])
 
-        #* Las elecciones que tendrá el usuario en el <select>
+        # * Las elecciones que tendrá el usuario en el <select>
         choices = []
 
         for registry in foreign_table_body:
             choice_value = registry[0]  # ? El valor "real" a subir en el form será el id
             choice_show_name = registry[1]  # ? El nombre o valor con el que se muestra en front
-            choice = (choice_value, "id: " + str(choice_value) + " (" + str(choice_show_name) + ")")
+            choice = (choice_value, f"id: {choice_value} ({choice_show_name})")
             choices.append(choice)
 
         return SelectField(column, choices=choices, validators=[DataRequired()])
 
     # * Si la columna no es una llave foránea, crea un <input> de acuerdo
     # * al tipo de dato de la columna dentro de la base de datos.
+
+    float_types = ["FLOAT", "REAL", "DOUBLE PRECISION", "DECIMAL", "NUMERIC"]
+    date_types = ["DATE", "DATETIME"]
+
     if "INTEGER" in column_data["type"]:
         return IntegerField(column, validators=[DataRequired()])
-    elif any(
-            float_type in column_data["type"] for float_type in
-            ["FLOAT", "REAL", "DOUBLE PRECISION", "DECIMAL", "NUMERIC"]):
+    elif any(float_type in column_data["type"] for float_type in float_types):
         return DecimalField(column, validators=[DataRequired()])
-    elif any(date_type in column_data["type"] for date_type in ["DATE", "DATETIME"]):
+    elif any(date_type in column_data["type"] for date_type in date_types):
         return DateField(column, validators=[DataRequired()])
     else:
         numbers = findall(r'\d+', column_data["type"])
         max_length = int(''.join(numbers))
         return StringField(column, validators=[DataRequired(), Length(max=max_length)])
+
+

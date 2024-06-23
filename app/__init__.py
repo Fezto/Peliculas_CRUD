@@ -12,7 +12,6 @@ from dotenv import load_dotenv
 app = Flask(__name__)
 
 #* Traemos las credenciales de nuestro .env
-
 load_dotenv()
 DB_HOST = os.getenv("DB_HOST")
 DB_NAME = os.getenv("DB_NAME")
@@ -34,6 +33,7 @@ elif DB_ORIGIN == "sqlserver":
 bootstrap = Bootstrap5(app)
 database = SQLAlchemy(app)
 
-
 #* Una vez lista la app, traer todas las rutas desde routes.py
 from app import routes
+
+

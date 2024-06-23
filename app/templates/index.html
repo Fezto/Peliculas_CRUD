@@ -1,5 +1,4 @@
-<!-- Importamos las funciones de Bootstrap-Flask que le son utiles a todos los templates -->
-{% from "bootstrap5/utils.html" import render_messages %}
+<!-- Importamos las funciones de Bootstrap-Flask que nos són útiles -->
 {% from "bootstrap5/form.html" import render_form %}
 
 <!doctype html>
@@ -102,7 +101,7 @@
 <script src="{{ url_for("static", filename="scripts/init.js") }}"></script>
 
 <!-- Importamos las funciones que hacen las solicitudes HTTP
-     Son las peticiones hacia las rutas /data de Flask. -->
+     Son funciones que son las peticiones hacia las rutas de Flask. -->
 <script src="{{ url_for("static", filename="scripts/requests.js") }}"></script>
 
 <!-- Importamos una clase personalizada para su incorporación en
