@@ -16,6 +16,8 @@ tables = db.select_tables()
 # * Rutas principales. Estas son las que responden ante las solicitudes HTTP
 # * del cliente.
 
+
+
 # ! Ruta raíz -> Redirige a la primer tabla de la DB
 @app.route("/", methods=["GET"])
 def start():
