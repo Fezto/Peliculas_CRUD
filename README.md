@@ -5,13 +5,13 @@
 
 Por el momento, la ejecución del programa con Docker solo es soportada con MySQL mientras que la instalación local soporta MySQL y SQLServer
 
-### 1. Instalación con Docker
+### I. Instalación con Docker
 
 Puedes realizar algunas de las dos instalaciones con docker:
  * La automática, la cual es la más rápida y sencilla
  * La manual, la cual es más personalizable pero más tardada
 
-#### a. Automática
+#### 1. Automática
 Esta versión utiliza dos imagenes precargadas en Docker Hub con todo lo necesario para poder utilizar el CRUD con una base de datos de Películas como ejemplo demostrativo. Lo único necesario es que hagas un directorio y que ahí generes un archivo ``docker-compose.yaml`` que ejecute ambos contenedores. **¡Puedes copiar y pegar esto sin problemas!**
 
 ```
@@ -38,13 +38,13 @@ docker-compose up
 Si es tu primera vez ejecutando, Docker tendrá que jalar las imagenes en línea desde Docker Hub y tardará aproximadamente unos 30 segundos en ejecutarse.
 
 
-#### b. Manual
+#### 2. Manual
 La versión manual permite la creción de imagenes personalizadas donde puedes cambiar o mejorar el CRUD de aquí o la base de datos que utiliza.
 ```bash
 docker pull ayrtonsch/crud_flask_pi
 ```
 
-#### b. Genera tu archivo .env
+####  a. Genera tu archivo .env
 Luego, genera un archivo ``.env``. Puedes copiar el siguiente fragmento y pegarlo.
 
 ```
@@ -55,11 +55,11 @@ MYSQL_DATABASE=peliculas    # No cambiar
 MYSQL_ROOT_PASSWORD=abc     # Cambiar
 ```
 
-#### c. Descarga el archivo de volcado
+#### b. Descarga el archivo de volcado
 Este será el que contiene todo el código SQL para la generación de los registros
 
 
-#### d. Genera tu archivo docker-compose.yaml
+#### c. Genera tu archivo docker-compose.yaml
 Este será el encargado de ejecutar el contenedor de la app previamente instalada junto con una imagen de MySQL. Este lo puedes realizar de muchas maneras, aquí se te presenta una propuesta
 
 ```
@@ -87,21 +87,22 @@ services:
 ### -- Continuará ----
 
 
-### 2. Instalación local
+### II. Instalación local
+#### 1. Clonación del proyecto
 Primero ingresa en la carpeta donde quieras que se ubique el proyecto e ingresa el siguiente comando
 ```bash
 git clone https://github.com/Fezto/CRUD_Flask_PI.git
 ```
 Una vez instalado, abre el directorio en tu IDE de elección.
 
-### 2. Instalación de las librerías
+#### 2. Instalación de las librerías
 Una vez dentro, inserta el siguiente comando para descargar todas las librerías de Python necesarias del proyecto, las cuales se encuentran en ``requirements.txt``
 ```bash
 pip install -r requirements.txt
 ```
 Todas las librerías por la parte de JavaScript son importadas mediante CDNs, por lo que **una conexión a internet es obligatoria**
 
-### 3. Ingresa al archivo ``.env``
+#### 3. Ingresa al archivo ``.env``
 Dentro de tu IDE agrega en la carpeta raíz tu archivo ``.env`` con las variables que se encuentran a continuación
 ```bash
 # Escoge entre MySQQ o SQLServer
@@ -121,7 +122,7 @@ FLASK_APP=app.py    # OBLIGATORIO
 
 ```
 
-### 4. Ejecuta el programa
+#### 4. Ejecuta el programa
 Para correr el programa solo basta con utilizar el siguiente comando
 ```bash
 flask run
