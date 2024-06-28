@@ -1,0 +1,7 @@
+FROM mysql:8.4.0
+
+# Copia el archivo de volcado SQL al directorio de scripts de inicio
+COPY DumpPeliculas.sql /docker-entrypoint-initdb.d/
+
+ENV MYSQL_ROOT_PASSWORD=root
+ENV MYSQL_DATABASE=peliculas

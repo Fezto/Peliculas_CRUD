@@ -29,7 +29,7 @@ CREATE TABLE `clasificaciones` (
   `id` int NOT NULL AUTO_INCREMENT,
   `clasificacion` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +38,7 @@ CREATE TABLE `clasificaciones` (
 
 LOCK TABLES `clasificaciones` WRITE;
 /*!40000 ALTER TABLE `clasificaciones` DISABLE KEYS */;
-INSERT INTO `clasificaciones` VALUES (1,'G'),(2,'PG'),(3,'PG-13'),(4,'R'),(5,'NC-17'),(6,'PG-13'),(7,'R'),(8,'G2');
+INSERT INTO `clasificaciones` VALUES (1,'G'),(2,'PG'),(3,'PG-13'),(4,'R'),(5,'NC-17'),(6,'PG-13'),(7,'R'),(8,'G');
 /*!40000 ALTER TABLE `clasificaciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -66,7 +66,7 @@ CREATE TABLE `clientes` (
 
 LOCK TABLES `clientes` WRITE;
 /*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
-INSERT INTO `clientes` VALUES (1,'','González','Pérez','cliente1@example.com','555-1234'),(2,'','Rodríguez','López','cliente2@example.com','555-5678'),(3,'','Martínez','García','cliente3@example.com','555-9101'),(4,'','Hernández','Martínez','cliente4@example.com','555-4321'),(5,'','López','Gutiérrez','cliente5@example.com','555-8765'),(6,'','Díaz','Pérez','cliente6@example.com','555-2109');
+INSERT INTO `clientes` VALUES (1,'Juan','González','Pérez','cliente1@example.com','555-1234'),(2,'Rigoberto','Rodríguez','López','cliente2@example.com','555-5678'),(3,'María','Martínez','García','cliente3@example.com','555-9101'),(4,'Sofía','Hernández','Martínez','cliente4@example.com','555-4321'),(5,'José','López','Gutiérrez','cliente5@example.com','555-8765'),(6,'Adrián','Díaz','Pérez','cliente6@example.com','555-2109');
 /*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -86,8 +86,8 @@ CREATE TABLE `funciones` (
   PRIMARY KEY (`id`),
   KEY `pelicula_id` (`pelicula_id`),
   KEY `sala_id` (`sala_id`),
-  CONSTRAINT `funciones_ibfk_1` FOREIGN KEY (`pelicula_id`) REFERENCES `peliculas` (`id`),
-  CONSTRAINT `funciones_ibfk_2` FOREIGN KEY (`sala_id`) REFERENCES `salas` (`id`)
+  CONSTRAINT `funciones_ibfk_1` FOREIGN KEY (`pelicula_id`) REFERENCES `peliculas` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `funciones_ibfk_2` FOREIGN KEY (`sala_id`) REFERENCES `salas` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -142,8 +142,8 @@ CREATE TABLE `peliculas` (
   PRIMARY KEY (`id`),
   KEY `genero_id` (`genero_id`),
   KEY `clasificacion_id` (`clasificacion_id`),
-  CONSTRAINT `peliculas_ibfk_1` FOREIGN KEY (`genero_id`) REFERENCES `generos` (`id`),
-  CONSTRAINT `peliculas_ibfk_2` FOREIGN KEY (`clasificacion_id`) REFERENCES `clasificaciones` (`id`)
+  CONSTRAINT `peliculas_ibfk_1` FOREIGN KEY (`genero_id`) REFERENCES `generos` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `peliculas_ibfk_2` FOREIGN KEY (`clasificacion_id`) REFERENCES `clasificaciones` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -173,9 +173,9 @@ CREATE TABLE `reservas` (
   PRIMARY KEY (`id`),
   KEY `cliente_id` (`cliente_id`),
   KEY `funcion_id` (`funcion_id`),
-  CONSTRAINT `reservas_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`id`),
-  CONSTRAINT `reservas_ibfk_2` FOREIGN KEY (`funcion_id`) REFERENCES `funciones` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `reservas_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `reservas_ibfk_2` FOREIGN KEY (`funcion_id`) REFERENCES `funciones` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -184,7 +184,6 @@ CREATE TABLE `reservas` (
 
 LOCK TABLES `reservas` WRITE;
 /*!40000 ALTER TABLE `reservas` DISABLE KEYS */;
-INSERT INTO `reservas` VALUES (1,2,'2023-07-25',1,1),(2,4,'2023-07-26',2,2),(3,1,'2023-07-27',3,3),(4,3,'2023-09-12',4,4),(5,2,'2023-10-05',5,5),(6,5,'2023-11-18',6,6);
 /*!40000 ALTER TABLE `reservas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -202,7 +201,7 @@ CREATE TABLE `salas` (
   `tipo_sala_id` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `tipo_sala_id` (`tipo_sala_id`),
-  CONSTRAINT `salas_ibfk_1` FOREIGN KEY (`tipo_sala_id`) REFERENCES `tipo_salas` (`id`)
+  CONSTRAINT `salas_ibfk_1` FOREIGN KEY (`tipo_sala_id`) REFERENCES `tipo_salas` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -249,4 +248,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-24 20:03:33
+-- Dump completed on 2024-06-27 20:59:22
