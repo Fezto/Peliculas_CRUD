@@ -1,5 +1,6 @@
 # ? Establece las rutas de nuestro servidor. Todas las peticiones de la página se
 # ? redirigen aquí
+import os
 
 from flask import render_template, url_for, request, redirect, jsonify
 
