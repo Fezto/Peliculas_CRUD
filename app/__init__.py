@@ -14,29 +14,17 @@ app = Flask(__name__)
 #* Traemos las credenciales de nuestro .env
 load_dotenv()
 
-DOCKER = os.getenv("DOCKER") or "off"
-ORIGIN = os.getenv("ORIGIN")
-
 #* Configuramos la llave secreta para el funcionamiento de Flask-WTF y Flask-SQLAlchemy
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 
 #* Configuramos la conexión de la app hacia la base de datos
-if DOCKER == "on":
-    if ORIGIN == "mysql":
-        MYSQL_ROOT_PASSWORD = os.getenv("MYSQL_ROOT_PASSWORD")
-        MYSQL_DATABASE = os.getenv("MYSQL_DATABASE")
-        app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://root:{MYSQL_ROOT_PASSWORD}@db/{MYSQL_DATABASE}'
-else:
-    DB_HOST = os.getenv("DB_HOST") or "localhost"
-    DB_NAME = os.getenv("DB_NAME")
-    DB_USER = os.getenv("DB_USER") or "root"
-    DB_PASS = os.getenv("DB_PASS")
+DB_HOST = os.getenv("DB_HOST") or "localhost"
+DB_NAME = os.getenv("DB_NAME")
+DB_USER = os.getenv("DB_USER") or "root"
+DB_PASS = os.getenv("DB_PASS")
 
-    if ORIGIN == "mysql":
-        app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://{DB_USER}:{DB_PASS}@{DB_HOST}/{DB_NAME}'
-    elif ORIGIN == "sqlserver":
-        app.config[
-            'SQLALCHEMY_DATABASE_URI'] = f'mssql+pyodbc://@{DB_HOST}/{DB_NAME}?trusted_connection=yes&driver=ODBC+Driver+18+for+SQL+Server&Encrypt=no'
+
+app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://{DB_USER}:{DB_PASS}@{DB_HOST}/{DB_NAME}'
 
 bootstrap = Bootstrap5(app)
 database = SQLAlchemy(app)
