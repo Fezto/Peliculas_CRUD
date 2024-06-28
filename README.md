@@ -8,11 +8,11 @@ Por el momento, la ejecución del programa con Docker solo es soportada con MySQ
 ### 1. Instalación con Docker
 
 Puedes realizar algunas de las dos instalaciones con docker:
- * La automática, la cual es la más rápida y más sencilla
+ * La automática, la cual es la más rápida y sencilla
  * La manual, la cual es más personalizable pero más tardada
 
 #### a. Automática
-Esta versión utiliza dos imagenes precargadas en Docker Hub con todo lo necesario para poder utilizar el CRUD con una base de datos de Películas. Lo unico necesario es que hagas un directorio y que ahí generes un archivo ``docker-compose.yaml`` que ejecute ambos contenedores. **¡Puedes copiar y pegar esto sin problemas!**
+Esta versión utiliza dos imagenes precargadas en Docker Hub con todo lo necesario para poder utilizar el CRUD con una base de datos de Películas como ejemplo demostrativo. Lo único necesario es que hagas un directorio y que ahí generes un archivo ``docker-compose.yaml`` que ejecute ambos contenedores. **¡Puedes copiar y pegar esto sin problemas!**
 
 ```
 services:
@@ -39,7 +39,7 @@ Si es tu primera vez ejecutando, Docker tendrá que jalar las imagenes en línea
 
 
 #### b. Manual
-Instala la imagen de la aplicación de Flask como lo harías con cualquier otra imagen
+La versión manual permite la creción de imagenes personalizadas donde puedes cambiar o mejorar el CRUD de aquí o la base de datos que utiliza.
 ```bash
 docker pull ayrtonsch/crud_flask_pi
 ```
