@@ -3,28 +3,42 @@
 
 ## Instalación
 
+Por el momento, la ejecución del programa con Docker solo es soportada con MySQL mientras que la instalación local soporta MySQL y SQLServer
+
 ### 1. Instalación con Docker
 
-El objetivo de esta instalación es el de terminar con un directorio similar al siguiente
+Puedes realizar algunas de las dos instalaciones con docker:
+ * La automática, la cual es la más rápida y más sencilla
+ * La manual, la cual es más personalizable pero más tardada
+
+#### a. Automática
+Esta versión utiliza dos imagenes precargadas en Docker Hub con todo lo necesario para poder utilizar el CRUD con una base de datos de Películas. Lo unico necesario es que hagas un directorio y que ahí generes un archivo ``docker-compose.yaml`` que ejecute ambos contenedores. **¡Puedes copiar y pegar esto sin problemas!**
+
 ```
-C:.
-├───mysql-data
-│   └───  # Tu base de datos
-├───.dockerignore
-├───.env
-├───docker-compose.yaml
-├───DumpPeliculas.sql
-└───wait-for-it.sh
+services:
+  web:
+    image: ayrtonsch/peliculas_crud
+    command: ["./wait-for-it.sh", "db:3306", "--timeout=30", "--", "flask", "run", "--host=0.0.0.0"]
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+    restart: on-failure
+
+  db:
+    image: ayrtonsch/peliculas_db
 ```
 
-Puedes obtener una plantilla ya generada y lista para su ejecución [aquí](https://github.com), en donde solo requerirás ejecutar el siguiente comando dentro de tu carpeta donde contengas todos los archivos.
+Se recomienda también descargar el script de bash ``wait-for-it.sh``, ya que este permitirá que el contenedor con el CRUD se ejecute cuando la base de datos está lista. Puedes instalar el script de este mismo repositorio o del repositorio original [aquí](https://github.com/vishnubob/wait-for-it)
+
+Con tu archivo ``wait-for-it.sh`` y ``docker-compose.yaml`` dentro de un directorio, llego la hora de ejecutar el siguiente comando:
 ```bash
 docker-compose up
 ```
+Si es tu primera vez ejecutando, Docker tendrá que jalar las imagenes en línea desde Docker Hub y tardará aproximadamente unos 30 segundos en ejecutarse.
 
-Si gustas, por supuesto puedes realizarlo manualmente
 
-#### a. Instala la imagen del CRUD
+#### b. Manual
 Instala la imagen de la aplicación de Flask como lo harías con cualquier otra imagen
 ```bash
 docker pull ayrtonsch/crud_flask_pi
@@ -70,7 +84,7 @@ services:
     env_file:
       - .env
 ```
-
+### -- Continuará ----
 
 
 ### 2. Instalación local
@@ -90,22 +104,20 @@ Todas las librerías por la parte de JavaScript son importadas mediante CDNs, po
 ### 3. Ingresa al archivo ``.env``
 Dentro de tu IDE agrega en la carpeta raíz tu archivo ``.env`` con las variables que se encuentran a continuación
 ```bash
-# Escoge entre mysql y sqlserver
-DB_ORIGIN=mi_smdb
+# Escoge entre MySQQ o SQLServer
+ORIGIN=mysql
 
-# Inserta tus datos de acorde lo necesites.
-# sqlserver solo requiere los primeros dos en caso de usar autenticación por windows.
-
-DB_HOST=localhost         # Por lo general será siempre localhost
-DB_NAME=mi_base_datos     # El nombre de tu base de datos
-DB_USER=mi_usuario        # El nombre de su usuario
-DB_PASS=mi_contraseña     # La contraseña de tu usuario
+# Inserta tus datos de acorde lo necesites..
+DB_NAME=your_database        # OBLIGATORIO: El nombre de tu base de datos
+DB_PASS=your_password        # OBLIGATORIO: La contraseña de tu usuario
+DB_HOST=your_host_ip         # [OPCIONAL]: Por default configurado como "localhost"
+DB_USER=your_username        # [OPCIONAL]: Por default configurado como "root"
 
 # Configura un string que será tu llave CSRF secreta
-SECRET_KEY=un_string_dificil_pero_necesario
+SECRET_KEY=un_string_dificil_pero_necesario  # OBLIGATORIO
 
 # El nombre de la app. Este no cambia.
-FLASK_APP=app.py
+FLASK_APP=app.py    # OBLIGATORIO
 
 ```
 
