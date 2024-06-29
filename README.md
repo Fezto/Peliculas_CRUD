@@ -1,4 +1,4 @@
-# CRUD_Flask_PI
+# Peliculas_CRUD
  Un CRUD basado en Flask fusionado épicamente con un poco de JavaScript
 
 ## Instalación
