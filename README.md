@@ -4,14 +4,14 @@
 ## Instalación
 
 ### I. Instalación con Docker
-Esta versión utiliza dos imagenes precargadas en Docke Hub con todo lo necesario para poder utilizar. Sigue los pasos a continuación 
+Esta versión utiliza dos imagenes precargadas en Docker Hub con todo lo necesario para poder utilizar el CRUD. Sigue los pasos a continuación 
 
 #### a. Descarga las imagenes desde Docker Hub
 
 En un ``cmd`` o ``bash``, ejecuta los siguientes comandos
 ```bash
 docker pull ayrtonsch/peliculas_crud
-docker pull ayrtonsch/peliculas_cmd
+docker pull ayrtonsch/peliculas_bd
 ```
 
 #### b. Genera un directorio nuevo
@@ -45,6 +45,8 @@ docker-compose up
 ```
 Si es tu primera vez ejecutando, Docker tendrá que jalar las imagenes en línea desde Docker Hub y tardará aproximadamente unos 30 segundos en ejecutarse.
 
+#### d. ¿Error?
+Si te  aparece un error lo más probable es que sea porque el puerto 5000, el cual utiliza Flask por defecto, está ocupado por algun otro proceso de tu Sistema Operativo
 
 ### II. Instalación local
 #### a. Clonación del proyecto
@@ -63,7 +65,7 @@ Todas las librerías por la parte de JavaScript son importadas mediante CDNs, po
 
 #### 3. Generamos un archivo ``.env``
 Dentro de tu IDE agrega en la carpeta raíz tu archivo ``.env`` con las variables que se encuentran a continuación
-```bash
+```
 # Inserta tus datos de acorde lo necesites..
 DB_NAME=your_database        # OBLIGATORIO: El nombre de tu base de datos
 DB_PASS=your_password        # OBLIGATORIO: La contraseña de tu usuario
