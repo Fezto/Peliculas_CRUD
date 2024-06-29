@@ -33,10 +33,15 @@ class Database:
             raise KeyError(f"La tabla {table_name} no existe!")
 
     #* Regresa todos los registros de una tabla
-    def select_all(self, table: Table):
-        stmt = select(table)
-        result = self.database.session.execute(stmt)
-        return result.all()
+    def select_all(self, table: Table, registry_id=None):
+        if(registry_id):
+            stmt = select(table).where(table.columns.id == registry_id)
+            result = self.database.session.execute(stmt)
+            return result.fetchone()
+        else:
+            stmt = select(table)
+            result = self.database.session.execute(stmt)
+            return result.all()
 
     #* Regresa una lista con el nombre de todas las columnas
     def select_columns(self, table: Table):

@@ -84,3 +84,9 @@ def columns(table):
     table_columns = db.select_columns(table=db[table])
     print(table_columns)
     return table_columns
+
+@app.route("/data/<table>/<int:id>", methods=["GET"])
+def registry(table, id):
+    registry = db.select_all(table=db[table], registry_id=id)
+    registry = registry._asdict()
+    return registry
