@@ -1,6 +1,5 @@
 # ? Establece las rutas de nuestro servidor. Todas las peticiones de la página se
 # ? redirigen aquí
-import os
 
 from flask import render_template, url_for, request, redirect, jsonify
 
@@ -16,8 +15,6 @@ tables = db.select_tables()
 
 # * Rutas principales. Estas son las que responden ante las solicitudes HTTP
 # * del cliente.
-
-
 
 # ! Ruta raíz -> Redirige a la primer tabla de la DB
 @app.route("/", methods=["GET"])
@@ -40,7 +37,7 @@ def index(table):
             # * insertará dentro del <modal>
             ModalForm = generate_dynamic_form(table_columns_data=table_columns_data, table_columns=table_columns, db=db)
 
-            # * Instancia de la clase generada
+            # * Instancia de la clase generada, el cual es un formulario genérico
             modal_form = ModalForm()
 
             return render_template('index.html', tables=tables,
