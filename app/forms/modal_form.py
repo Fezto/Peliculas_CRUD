@@ -16,7 +16,7 @@ from app.forms.dynamic_special_field import generate_special_field
 # * Define el nombre de las columnas/campos que requerirán un tratamiento especial.
 special_fields = ["correo", "telefono"]
 
-# * Función que genera clases (formularios de Flask-WTF genéricos) dinámicamente
+# * Función que genera clases (formularios de Flask-WTF genéricos) dinámicamente.
 def generate_dynamic_form(table_columns_data: Dict[str, Any], table_columns: List[str],
                           db: Database):
     # * Los <input> dependerán del tipo de columna.
