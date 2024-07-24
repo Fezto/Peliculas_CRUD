@@ -1,23 +1,21 @@
-import phonenumbers
-from wtforms.fields.simple import EmailField, StringField
-from wtforms.validators import Email, ValidationError
+from wtforms.fields.choices import SelectField
+from wtforms.fields.simple import EmailField
+from wtforms.validators import Email, DataRequired, Length
+from wtforms.fields import TelField
 
 
 def generate_special_field(column_data):
     column_name = column_data["name"]
 
     if column_name == "correo":
-        return EmailField(column_name, validators=[Email()])
+        email_regex = ".+@(gmail|yahoo|hotmail|outlook)\\.(com|net|edu)"
+        return EmailField(column_name, validators=[DataRequired(), Email()], render_kw={"pattern": email_regex})
 
     if column_name == "telefono":
-        return StringField(column_name, validators=[Email(), validate_phone])
+        tel_regex = "[0-9]{3}-[0-9]{3}-[0-9]{4}"
+        return TelField(column_name, validators=[DataRequired(), Length(min=10, max=15)],
+                        render_kw={"pattern": tel_regex, "placeholder": "442-194-1607"})
 
-def validate_phone(form, field):
-    try:
-        input_number = phonenumbers.parse(field.data, None)
-        if not phonenumbers.is_valid_number(input_number):
-            raise ValidationError('Invalid phone number.')
-    except Exception as e:
-        raise ValidationError('Invalid phone number format. Please include country code.')
-
-
+    if column_name == "numero_sala":
+        tipo_sala_choices = [(i, str(i)) for i in range(1, 15)]
+        return SelectField(column_name, choices=tipo_sala_choices)

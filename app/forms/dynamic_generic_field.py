@@ -13,7 +13,6 @@ date_types = ["DATE", "DATETIME"]
 
 
 def generate_generic_field(column_data):
-
     column_name = column_data["name"]
     column_type = column_data["type"]
 
@@ -31,4 +30,4 @@ def generate_generic_field(column_data):
         if numbers:
             max_length = int(''.join(numbers))
             return StringField(column_name, validators=[DataRequired(), Length(max=max_length)])
-        return StringField(column_name, validators=[DataRequired(), Length(max=0)])
+        return StringField(column_name, validators=[DataRequired()])

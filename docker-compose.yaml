@@ -1,6 +1,6 @@
 services:
   web:
-    image: ayrtonsch/peliculas_crud
+    image: ayrtonsch/peliculas_crud:latest
     command: ["./wait-for-it.sh", "db:3306", "--timeout=30", "--", "flask", "run", "--host=0.0.0.0"]
     ports:
       - 5000:5000
@@ -9,5 +9,5 @@ services:
     restart: on-failure
 
   db:
-    image: ayrtonsch/peliculas_db
+    image: ayrtonsch/peliculas_db:latest
 

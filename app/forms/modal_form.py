@@ -14,7 +14,7 @@ from app.forms.dynamic_special_field import generate_special_field
 
 
 # * Define el nombre de las columnas/campos que requerirán un tratamiento especial.
-special_fields = ["correo", "telefono"]
+special_fields = ["correo", "telefono", "numero_sala"]
 
 # * Función que genera clases (formularios de Flask-WTF genéricos) dinámicamente.
 def generate_dynamic_form(table_columns_data: Dict[str, Any], table_columns: List[str],
@@ -29,7 +29,7 @@ def generate_dynamic_form(table_columns_data: Dict[str, Any], table_columns: Lis
 # * En caso de ser por un <input>, tambien define cuál tipo.
 def get_field_class(column_data, db):
     # * Obtenemos los nombres de las columnas de la tabla a tratar.
-    column_names = [column_data["name"] for column in column_data]
+    column_names = [column_data["name"] for _ in column_data]
 
     # * Si la columna tiene una llave foránea, crea un <select>
     # * Es necesario pasar a db debido a que necesitamos consultar información
@@ -39,6 +39,7 @@ def get_field_class(column_data, db):
 
     # * Si la columna requiere un tratamento especial, tratarlo como tal.
     elif any(special_field in column_names for special_field in special_fields):
+        print("Columna especial detectada:", column_data["name"])
         return generate_special_field(column_data)
 
     # * En caso de que se requiera un campo genérico, aplicarlo.
