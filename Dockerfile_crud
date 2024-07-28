@@ -8,7 +8,5 @@ RUN pip install -r requirements.txt
 COPY . .
 
 # Expone el puerto en el que se ejecutará la aplicación
+# Recuerda que flask utiliza este puerto para sus solicitudes
 EXPOSE 5000
-
-# Define el comando para ejecutar la aplicación
-CMD ["flask", "run"]

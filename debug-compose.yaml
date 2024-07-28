@@ -1,0 +1,24 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile_crud
+    command: ["./wait-for-it.sh", "db:3306", "--timeout=30", "--", "flask", "run", "--host=0.0.0.0"]
+    volumes:
+      - .:/app
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+    restart: on-failure
+    env_file:
+      - .env
+
+  db:
+    image: mysql:8.4.0
+    command: --init-file /docker-entrypoint-initdb.d/DumpPeliculas.sql
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+      - ./DumpPeliculas.sql:/docker-entrypoint-initdb.d/DumpPeliculas.sql
+    env_file:
+      - .env

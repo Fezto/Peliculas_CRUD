@@ -4,23 +4,15 @@
 ## Instalación
 
 ### I. Instalación con Docker
-Esta versión utiliza dos imagenes precargadas en Docker Hub con todo lo necesario para poder utilizar el CRUD. Sigue los pasos a continuación 
+Esta versión utiliza dos imagenes precargadas en Docker Hub con todo lo necesario para poder utilizar el CRUD. Sigue los pasos a continuación
 
-#### a. Descarga las imagenes desde Docker Hub
-
-En un ``cmd`` o ``bash``, ejecuta los siguientes comandos
-```bash
-docker pull ayrtonsch/peliculas_crud
-docker pull ayrtonsch/peliculas_bd
-```
-
-#### b. Genera un directorio nuevo
+#### a. Genera un directorio nuevo
 Haz una nueva carpeta en el lugar que desees.
 
-#### c. Genera un archivo ``docker-compose.yaml``
+#### b. Genera un archivo ``docker-compose.yaml``
 Crea un archivo``docker-compose.yaml``, el cual nos servirá para que ejecutemos ambos contenedores. **¡Puedes copiar y pegar esto sin problemas!**
 
-```
+```yaml
 services:
   web:
     image: ayrtonsch/peliculas_crud
@@ -30,15 +22,22 @@ services:
     depends_on:
       - db
     restart: on-failure
+    environment:
+      - DOCKER=on
+      - MYSQL_DATABASE=peliculas     # Nombre de la base de datos. Este no se cambia.
+      - MYSQL_ROOT_PASSWORD=amo_poo  # Contraseña con la que el usuario root del contenedor ingresa.
+      - SECRET_KEY=123456789         # Llave secreta para el funcionamiento de Flask.
 
   db:
     image: ayrtonsch/peliculas_db
+    environment:
+      - MYSQL_ROOT_PASSWORD=amo_poo   # Contraseña del nuevo usuario root del contenedor
 ```
 
-#### d. Descarga el archivo ``wait-for-it.sh``
+#### c. Descarga el archivo ``wait-for-it.sh``
 Este pequeño script permitirá que el contenedor con el CRUD se ejecute cuando la base de datos está lista. Puedes instalar el script de este mismo repositorio o del repositorio original [aquí](https://github.com/vishnubob/wait-for-it)
 
-#### e. ¡Ejecuta el programa!
+#### d. ¡Ejecuta el programa!
 Con tu archivo ``wait-for-it.sh`` y ``docker-compose.yaml`` dentro de un directorio, llego la hora de ejecutar el siguiente comando:
 ```bash
 docker-compose up
@@ -65,19 +64,18 @@ Todas las librerías por la parte de JavaScript son importadas mediante CDNs, po
 
 #### 3. Generamos un archivo ``.env``
 Dentro de tu IDE agrega en la carpeta raíz tu archivo ``.env`` con las variables que se encuentran a continuación
-```
+```dotenv
 # Inserta tus datos de acorde lo necesites..
-DB_NAME=your_database        # OBLIGATORIO: El nombre de tu base de datos
-DB_PASS=your_password        # OBLIGATORIO: La contraseña de tu usuario
-DB_USER=your_username        # [OPCIONAL]: Por default configurado como "root"
-DB_HOST=your_host_ip         # [OPCIONAL]: Por default configurado como "localhost"
-                             #             Si quieres dockerizar, debe ser "db"
+MYSQL_DATABASE=peliculas                 # OBLIGATORIO: El nombre de tu base de datos
+MYSQL_ROOT_PASSWORD=amo_poo              # OBLIGATORIO: La contraseña de tu usuario
+MYSQL_USERNAME=root                      # [OPCIONAL]: Por default configurado como "root"
+MYSQL_HOST=localhost                     # [OPCIONAL]: Por default configurado como "localhost"
 
 # Configura un string que será tu llave CSRF secreta
-SECRET_KEY=un_string_dificil_pero_necesario  # OBLIGATORIO
+SECRET_KEY=123456789                     # OBLIGATORIO
 
 # El nombre de la app. Este no cambia.
-FLASK_APP=app.py    # OBLIGATORIO
+FLASK_APP=app.py                         # OBLIGATORIO
 
 ```
 

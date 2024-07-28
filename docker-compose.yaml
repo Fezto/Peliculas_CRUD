@@ -1,13 +1,19 @@
 services:
   web:
-    image: ayrtonsch/peliculas_crud:latest
+    image: ayrtonsch/peliculas_crud
     command: ["./wait-for-it.sh", "db:3306", "--timeout=30", "--", "flask", "run", "--host=0.0.0.0"]
     ports:
       - 5000:5000
     depends_on:
       - db
     restart: on-failure
+    environment:
+      - DOCKER=on
+      - MYSQL_DATABASE=peliculas
+      - MYSQL_ROOT_PASSWORD=amo_poo
+      - SECRET_KEY=123456789
 
   db:
-    image: ayrtonsch/peliculas_db:latest
-
+    image: ayrtonsch/peliculas_db
+    environment:
+      - MYSQL_ROOT_PASSWORD=amo_poo

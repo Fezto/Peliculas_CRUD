@@ -19,14 +19,17 @@ load_dotenv()
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 app.json = TimeEncoder(app)
 
-#* Configuramos la conexión de la app hacia la base de datos
-DB_HOST = os.getenv("DB_HOST") or "localhost"
-DB_NAME = os.getenv("DB_NAME")
-DB_USER = os.getenv("DB_USER") or "root"
-DB_PASS = os.getenv("DB_PASS")
 
+MYSQL_ROOT_PASSWORD = os.getenv("MYSQL_ROOT_PASSWORD")
+MYSQL_DATABASE = os.getenv("MYSQL_DATABASE")
+MYSQL_HOST = os.getenv("MYSQL_HOST") or "localhost"
+MYSQL_USERNAME = os.getenv("MYSQL_USERNAME") or "root"
 
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://{DB_USER}:{DB_PASS}@{DB_HOST}/{DB_NAME}'
+if os.getenv("DOCKER") == "on":
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://root:{MYSQL_ROOT_PASSWORD}@db/{MYSQL_DATABASE}'
+else:
+    #* Configuramos la conexión de la app hacia la base de datos
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://{MYSQL_USERNAME}:{MYSQL_ROOT_PASSWORD}@{MYSQL_HOST}/{MYSQL_DATABASE}'
 
 bootstrap = Bootstrap5(app)
 database = SQLAlchemy(app)
