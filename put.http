@@ -1,0 +1,7 @@
+###
+PUT http://localhost:5000/index/generos/2
+Content-Type: application/json
+
+{
+  "genero": "Hola mundo fui modificado"
+}

@@ -1,0 +1,3 @@
+# Solicitud DELETE para eliminar un registro existente
+DELETE http://localhost:5000/index/generos/9
+Content-Type: application/json

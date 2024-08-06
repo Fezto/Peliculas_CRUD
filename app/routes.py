@@ -2,6 +2,7 @@
 # ? redirigen aquí
 
 from flask import render_template, url_for, request, redirect, jsonify
+from sqlalchemy import inspect
 
 from app import app
 from app.database import Database
@@ -69,12 +70,6 @@ def delete(table, id):
 # * Rutas que devuelven información relevante en JSON.
 # * Su uso radica solo para la renderización de la tabla.
 
-@app.route("/data/<table>/body", methods=["GET"])
-def body(table):
-    table_body = db.select_all(table=db[table])
-    table_body = [row._asdict() for row in table_body]
-    return table_body
-
 
 @app.route("/data/<table>/columns", methods=["GET"])
 def columns(table):
@@ -87,3 +82,47 @@ def registry(table, id):
     registry = db.select_all(table=db[table], registry_id=id)
     registry = registry._asdict()
     return registry
+
+@app.route("/data/<table>/body", methods=["GET"])
+def body(table):
+    table_body = db.select_all(table=db[table])
+    table_body = [row._asdict() for row in table_body]
+
+    # Diccionarios para mapear IDs a nombres en las tablas referenciadas
+    reference_data = {
+        "peliculas": db.select_all(table=db["peliculas"]),
+        "salas": db.select_all(table=db["salas"]),
+        "generos": db.select_all(table=db["generos"]),
+        "clasificaciones": db.select_all(table=db["clasificaciones"]),
+        "tipo_salas": db.select_all(table=db["tipo_salas"]),
+        "clientes": db.select_all(table=db["clientes"]),
+        "funciones": db.select_all(table=db["funciones"])
+    }
+
+    # Crear diccionarios para mapear IDs a nombres
+    reference_dicts = {
+        "peliculas": {item.id: item.titulo for item in reference_data["peliculas"]},
+        "salas": {item.id: item.id for item in reference_data["salas"]},
+        "generos": {item.id: item.genero for item in reference_data["generos"]},
+        "clasificaciones": {item.id: item.clasificacion for item in reference_data["clasificaciones"]},
+        "tipo_salas": {item.id: item.nombre for item in reference_data["tipo_salas"]},
+        "clientes": {item.id: item.nombre for item in reference_data["clientes"]},
+        "funciones": {item.id: item.fecha for item in reference_data["funciones"]}
+    }
+
+    # Reemplazar los IDs foráneos con sus nombres correspondientes
+    for row in table_body:
+        if table == "funciones":
+            row["pelicula_id"] = reference_dicts["peliculas"].get(row["pelicula_id"], "Desconocido")
+            row["sala_id"] = reference_dicts["salas"].get(row["sala_id"], "Desconocido")
+        elif table == "peliculas":
+            row["genero_id"] = reference_dicts["generos"].get(row["genero_id"], "Desconocido")
+            row["clasificacion_id"] = reference_dicts["clasificaciones"].get(row["clasificacion_id"], "Desconocido")
+        elif table == "salas":
+            row["tipo_sala_id"] = reference_dicts["tipo_salas"].get(row["tipo_sala_id"], "Desconocido")
+        elif table == "reservas":
+            row["cliente_id"] = reference_dicts["clientes"].get(row["cliente_id"], "Desconocido")
+            row["funcion_id"] = reference_dicts["funciones"].get(row["funcion_id"], "Desconocido")
+
+    return jsonify(table_body)
+

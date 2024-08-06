@@ -2,7 +2,10 @@
 async function create_table(table_name) {
     try {
         let table_body = await select_all(table_name);
-        let table_columns = await select_columns(table_name);
+        console.log(table_body)
+        let table_c = await select_columns(table_name)
+        let table_columns = table_c.filter(column => column !== "id")
+        console.log(table_columns)
         let table_columns_grid = table_columns.map(column => ({field: column, filter: true}));
 
         // * Se agrega la columna personalizada con los botones al grid
